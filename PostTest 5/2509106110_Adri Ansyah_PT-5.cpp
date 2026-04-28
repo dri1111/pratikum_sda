@@ -2,27 +2,26 @@
 #include <string>
 using namespace std;
 
-struct BarangNode {
-    string namaBarang;
-    int stok;
-    BarangNode* next;
+struct BukuNode {
+    string judulBuku;
+    BukuNode* next;
 
-    BarangNode(string nama, int jumlah) {
-        namaBarang = nama;
-        stok = jumlah;
+    BukuNode(string judul) {
+        judulBuku = judul;
         next = nullptr;
     }
 };
 
-BarangNode* tambahBarang(BarangNode* head, string nama, int jumlah) {
-    BarangNode* newNode = new BarangNode(nama, jumlah);
-    
+BukuNode* tambahBuku(BukuNode* head, string judul) {
+    BukuNode* newNode = new BukuNode(judul);
+
     if (head == nullptr) {
         newNode->next = newNode;
         return newNode;
     }
-    
-    BarangNode* temp = head;
+
+    BukuNode* temp = head;
+
     while (temp->next != head) {
         temp = temp->next;
     }
@@ -33,30 +32,41 @@ BarangNode* tambahBarang(BarangNode* head, string nama, int jumlah) {
     return head;
 }
 
-void tampilkanStokSembako(BarangNode* head) {
+bool cariBuku(BukuNode* head, string judulDicari) {
     if (head == nullptr) {
-        cout << "Gudang kosong." << endl;
-        return;
+        return false;
     }
 
-    BarangNode* temp = head;
+    BukuNode* temp = head;
 
     do {
-        cout << "- " << temp->namaBarang << ": " << temp->stok << endl;
+        if (temp->judulBuku == judulDicari) {
+            return true;
+        }
+
         temp = temp->next;
+
     } while (temp != head);
+
+    return false;
 }
 
 int main() {
-    BarangNode* head = nullptr;
-    
-    head = tambahBarang(head, "Beras", 50);
-    head = tambahBarang(head, "Minyak Goreng", 30);
-    head = tambahBarang(head, "Gula Pasir", 20);
-    head = tambahBarang(head, "Tepung Terigu", 15);
+    BukuNode* head = nullptr;
 
-    cout << "Daftar Stok Sembako:" << endl;
-    tampilkanStokSembako(head);
+    head = tambahBuku(head, "Struktur Data dengan C++");
+    head = tambahBuku(head, "Pengantar Algoritma");
+    head = tambahBuku(head, "Pemrograman Berorientasi Objek");
+    head = tambahBuku(head, "Sistem Basis Data");
+
+    string buku1 = "Pengantar Algoritma";
+    string buku2 = "Kalkulus Lanjut";
+
+    cout << "Mencari buku '" << buku1 << "': "
+         << (cariBuku(head, buku1) ? "Ditemukan" : "Tidak Ditemukan") << endl;
+
+    cout << "Mencari buku '" << buku2 << "': "
+         << (cariBuku(head, buku2) ? "Ditemukan" : "Tidak Ditemukan") << endl;
 
     return 0;
 }
